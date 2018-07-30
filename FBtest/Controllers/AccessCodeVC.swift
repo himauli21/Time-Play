@@ -69,29 +69,83 @@ class AccessCodeVC: UIViewController {
                     
                     
                     do {
-                       // let json = try JSON(data: dataFromServer)
-                        let json = try JSONSerialization.jsonObject(with: dataFromServer) as! [String:Any]
+                       var json = try JSON(data: dataFromServer)
+                       //let json = try JSONSerialization.jsonObject(with: dataFromServer) as! [String:Any]
                         
-                        // TODO: Parse the json response
-                        print("============")
-                       print(json)
-                       // AccessCodeVC.questions = json
-                        //print(json)
+                        var results:Array<JSON> = json["results"].arrayValue
+                        var new_results = [Any]();
                         
-                      //  let results = json["results"].dictionaryValue
-                        //print(results)
+                        for i in 0..<results.count{
                         
-                       //let aObject = json["results"] as! [String : AnyObject]
-                        //print(aObject)
+                            print("=====ITEM START====")
+                            
+                            var new_item = [NSString:Any]();
+                            var correct_option:NSString!
+                            
+                            var item = results[i]
+                            var option = item["correct_answer"]
+                            var option_string = item["correct_answer"].string as! NSString;
+                            var list: Array<JSON> = item["incorrect_answers"].arrayValue
+                            list.append(option)
+                            print( list )
+                            
+                            var shuffled = [NSString]();
+                            
+                            for i in 0..<list.count
+                            {
+                                let rand = Int(arc4random_uniform(UInt32(list.count)))
+                                
+                                var list_item = list[rand].string as! NSString;
+                                shuffled.append( list_item )
+                                
+                                list.remove(at: rand)
+                            }
+                            
+                            var new_lsit = [NSString:NSString]();
+                            for i in 0..<shuffled.count
+                            {
+                                var list_item = shuffled[i];
+                                if( i == 0 ){
+                                    if( option_string == list_item ){
+                                        correct_option = "A" ;
+                                    }
+                                    new_lsit["A"] = list_item;
+                                }else if( i == 1 ){
+                                    if( option_string == list_item ){
+                                        correct_option = "B" ;
+                                    }
+                                    new_lsit["B"] = list_item;
+                                }else if( i == 2 ){
+                                    if( option_string == list_item ){
+                                        correct_option = "C" ;
+                                    }
+                                    new_lsit["C"] = list_item;
+                                }else if( i == 3 ){
+                                    if( option_string == list_item ){
+                                        correct_option = "D" ;
+                                    }
+                                    new_lsit["D"] = list_item;
+                                }
+                            }
+                            
                         
+                            new_item["category"] = item["correct_answer"].string as! NSString;
+                            new_item["type"] = item["type"].string as! NSString;
+                            new_item["difficulty"] = item["difficulty"].string as! NSString;
+                            new_item["question"] = item["question"].string as! NSString;
+                            new_item["correct_answer"] = item["correct_answer"].string as! NSString;
+                            new_item["options"] = new_lsit;
+                            new_item["correct_option"] = correct_option;
+                            
+                            print(new_lsit)
+                            
+                            print("======ITEM END======")
+                            
+                            new_results.append( new_item )
+                        }
                         
-//                        if let data = json.data(using: .utf8) {
-//                            if let json = try? JSON(data: data) {
-//                                for item in json["results"].arrayValue {
-//                                    print(item["firstName"].stringValue)
-//                                }
-//                            }
-//                        }
+                        print(new_results)
+                        
                         
                         
                         let accessCode = arc4random()
@@ -105,9 +159,37 @@ class AccessCodeVC: UIViewController {
                         self.screenLabel.text = String(screen)
                         self.accessCodeLabel.text = String(accessCode)
                         
-                        let data = ["Screen": screen,"Access Code": accessCode,"Questions":json] as [String : Any]
+                        
+                        let data = ["Screen": screen,"Access Code": accessCode,"Questions":new_results] as [String : Any]
                         self.dbConnect.child("Quiz").child("quizId").child(String(accessCode)).setValue(data)
+                       
+                        var user_answers = [Any]();
+                        var user_answer = [NSString:Any]();
+                        user_answer["option_choosen"] = "A" ;
+                        user_answer["time_taken_in_seconds"] = 5 ;
+                        user_answers.append(user_answer)
+                      
+                        user_answer["option_choosen"] = "B" ;
+                        user_answer["time_taken_in_seconds"] = 5 ;
+                        user_answers.append(user_answer)
+                       
+                        user_answer["option_choosen"] = "C" ;
+                        user_answer["time_taken_in_seconds"] = 5 ;
+                        user_answers.append(user_answer)
+                        
+                        user_answer["option_choosen"] = "D" ;
+                        user_answer["time_taken_in_seconds"] = 5 ;
+                        user_answers.append(user_answer)
+                        
+                        user_answer["option_choosen"] = "E" ;
+                        user_answer["time_taken_in_seconds"] = 5 ;
+                        user_answers.append(user_answer)
+                        
+                        let data_1 = ["UserName": "UserName or email","answers":user_answers] as [String : Any]
+                        self.dbConnect.child("Quiz").child("quizId").child(String(accessCode)).child("Users").child("UserName").setValue(data_1)
               
+                        
+                        
                     }
                     catch {
                         print("error")
