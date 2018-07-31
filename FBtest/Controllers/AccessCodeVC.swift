@@ -12,6 +12,8 @@ import FirebaseDatabase
 import Alamofire            // 1. Import AlamoFire and SwiftyJson
 import SwiftyJSON
 
+var accessCodeToApply = "" ;
+
 class AccessCodeVC: UIViewController {
 
     var dbConnect:DatabaseReference!
@@ -22,9 +24,11 @@ class AccessCodeVC: UIViewController {
     
     @IBOutlet weak var screenLabel: UILabel!
     
+   
     let URL = "https://opentdb.com/api.php?amount=20&difficulty=easy&type=multiple"
     
     let url = "https://opentdb.com/api.php?amount=20&difficulty=easy&type=multiple"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +37,7 @@ class AccessCodeVC: UIViewController {
         self.dbConnect = Database.database().reference()
         
         getQuestions(url: URL)
+        
       
         
     }
@@ -188,7 +193,14 @@ class AccessCodeVC: UIViewController {
                         let data_1 = ["UserName": "UserName or email","answers":user_answers] as [String : Any]
                         self.dbConnect.child("Quiz").child("quizId").child(String(accessCode)).child("Users").child("UserName").setValue(data_1)
               
+                        questions_from_api = new_results;
+         
+                        accessCodeToApply = String(accessCode) ;
                         
+                        
+                      
+                        
+                       
                         
                     }
                     catch {
@@ -208,4 +220,5 @@ class AccessCodeVC: UIViewController {
         }
     }
 
+  
 }
