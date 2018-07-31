@@ -38,6 +38,9 @@ class QuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.dbConnect = Database.database().reference()
+        self.dbConnect.child("Quiz").child("quizId").child( accessCodeToApply ).child("hasGameStarted").setValue( true )
+        sleep(1)
         
         print(" Question View Controller ");
        
@@ -49,9 +52,6 @@ class QuestionViewController: UIViewController {
     
     func queryFirebase(_ item: UInt  ){
         
-    
-        
-        dbConnect = Database.database().reference()
         datbaseHandle = dbConnect?.child("Quiz").child("quizId").child( accessCodeToApply ).child("Questions")
             .queryLimited(toFirst: item)
             .observe(.childAdded, with: { (snapshot) in

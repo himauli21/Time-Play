@@ -165,42 +165,10 @@ class AccessCodeVC: UIViewController {
                         self.accessCodeLabel.text = String(accessCode)
                         
                         
-                        let data = ["Screen": screen,"Access Code": accessCode,"Questions":new_results] as [String : Any]
+                        let data = ["Screen": screen,"Access Code": accessCode,"Questions":new_results,"hasGameStarted":false] as [String : Any]
                         self.dbConnect.child("Quiz").child("quizId").child(String(accessCode)).setValue(data)
-                       
-                        var user_answers = [Any]();
-                        var user_answer = [NSString:Any]();
-                        user_answer["option_choosen"] = "A" ;
-                        user_answer["time_taken_in_seconds"] = 5 ;
-                        user_answers.append(user_answer)
-                      
-                        user_answer["option_choosen"] = "B" ;
-                        user_answer["time_taken_in_seconds"] = 5 ;
-                        user_answers.append(user_answer)
-                       
-                        user_answer["option_choosen"] = "C" ;
-                        user_answer["time_taken_in_seconds"] = 5 ;
-                        user_answers.append(user_answer)
-                        
-                        user_answer["option_choosen"] = "D" ;
-                        user_answer["time_taken_in_seconds"] = 5 ;
-                        user_answers.append(user_answer)
-                        
-                        user_answer["option_choosen"] = "E" ;
-                        user_answer["time_taken_in_seconds"] = 5 ;
-                        user_answers.append(user_answer)
-                        
-                        let data_1 = ["UserName": "UserName or email","answers":user_answers] as [String : Any]
-                        self.dbConnect.child("Quiz").child("quizId").child(String(accessCode)).child("Users").child("UserName").setValue(data_1)
-              
                         questions_from_api = new_results;
-         
                         accessCodeToApply = String(accessCode) ;
-                        
-                        
-                      
-                        
-                       
                         
                     }
                     catch {
