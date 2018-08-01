@@ -198,45 +198,39 @@ class QuestionViewController: UIViewController {
                         if( option == val1)
                         {
                             var correct_answer = Double(0 as! Int)
-                            var time_taken = Double(0 as! Int);
-                            var score = Double(0 as! Int) ;
+                            var time_taken = Double(0 as! Int)
+                            var score = Double(0 as! Int)
                             
                             // get option, time and score from SCORE ARRAY
                             if( keyExists ){
-                                var socre_previous = self.scoreArray[UserName] as! NSDictionary
+                                var socre_previous = self.scoreArray[UserName] as! [NSString:Double]
                                 
                                 var correct_answers_exist = socre_previous["correct_answers"] != nil
                                 var time_taken_exist = socre_previous["time_taken"] != nil
                                 var score_exist = socre_previous["score"] != nil
                                 
                                 if( correct_answers_exist ){
-                                    correct_answer = Double(socre_previous["correct_answers"] as! Int);
+                                    correct_answer = socre_previous["correct_answers"]!
                                 }
                                 
                                 if( time_taken_exist ){
-                                    time_taken = Double(socre_previous["time_taken"] as! Int);
+                                    time_taken = socre_previous["time_taken"]!
                                 }
                             
                                 if( score_exist ){
-                                    score = Double(socre_previous["score_exist"] as! Int);
+                                    score = socre_previous["score_exist"]!
                                 }
                             }
                             
                             correct_answer = correct_answer+1;
                             time_taken = time_taken+time_taken_in_second
                             score = score+( 10-time_taken_in_second )
+                           
+                            var scoreInternal = [NSString:Double]();
+                            scoreInternal["correct_answers"] = correct_answer
+                            scoreInternal["time_taken"] = time_taken
+                            scoreInternal["score_exist"] = score
                             
-                            let correct_answer_cast = String(correct_answer) as! NSString
-                            let time_taken_cast = String(time_taken) as! NSString
-                            let score_cast = String(score) as! NSString
-                            
-                            
-                            var scoreInternal = [NSString:NSString]();
-                            scoreInternal["correct_answers"] = correct_answer_cast ;
-                            scoreInternal["time_taken"] = time_taken_cast ;
-                            scoreInternal["score_exist"] = score_cast ;
-                            
-                        
                             self.scoreArray.setValue( scoreInternal, forKey: UserName as! String )
                            
                          }
