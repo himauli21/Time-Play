@@ -179,13 +179,15 @@ class QuestionViewController: UIViewController {
                     self.users = response.childSnapshot(forPath: "Users").value as! NSDictionary
                     self.usersJoined.append(self.users)
                   
-                    
+                    print("ABC")
                     
                     for (UserName, User) in self.users
                     {
+                        print("PQR")
                         let User1 = User as! NSDictionary
                         let option = User1["option_choosen"] as! NSString
-                        let time_taken_in_second = User1["time_taken_in_second"] as! Int
+                       // totalData = (jsonDict["totalfup"] as! NSString).doubleValue
+                        let time_taken_in_second = (User1["time_taken_in_second"] as! NSString).doubleValue
                         print(UserName)
                         print("Option Choosen : \(option)")
                         
@@ -195,9 +197,9 @@ class QuestionViewController: UIViewController {
                         
                         if( option == val1)
                         {
-                            var correct_answer = 0 as! Int;
-                            var time_taken = 0 as! Int;
-                            var score = 0 as! Int ;
+                            var correct_answer = Double(0 as! Int)
+                            var time_taken = Double(0 as! Int);
+                            var score = Double(0 as! Int) ;
                             
                             // get option, time and score from SCORE ARRAY
                             if( keyExists ){
@@ -208,15 +210,15 @@ class QuestionViewController: UIViewController {
                                 var score_exist = socre_previous["score"] != nil
                                 
                                 if( correct_answers_exist ){
-                                    correct_answer = socre_previous["correct_answers"] as! Int;
+                                    correct_answer = Double(socre_previous["correct_answers"] as! Int);
                                 }
                                 
                                 if( time_taken_exist ){
-                                    time_taken = socre_previous["time_taken"] as! Int;
+                                    time_taken = Double(socre_previous["time_taken"] as! Int);
                                 }
                             
                                 if( score_exist ){
-                                    score = socre_previous["score_exist"] as! Int;
+                                    score = Double(socre_previous["score_exist"] as! Int);
                                 }
                             }
                             
@@ -224,9 +226,9 @@ class QuestionViewController: UIViewController {
                             time_taken = time_taken+time_taken_in_second
                             score = score+( 10-time_taken_in_second )
                             
-                            let correct_answer_cast = correct_answer as! NSString
-                            let time_taken_cast = time_taken as! NSString
-                            let score_cast = score as! NSString
+                            let correct_answer_cast = String(correct_answer) as! NSString
+                            let time_taken_cast = String(time_taken) as! NSString
+                            let score_cast = String(score) as! NSString
                             
                             
                             var scoreInternal = [NSString:NSString]();
