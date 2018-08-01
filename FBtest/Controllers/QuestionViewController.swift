@@ -30,7 +30,7 @@ class QuestionViewController: UIViewController {
     var optionSelected = [Any]()
     var usersJoined = [Any]()
     var users: NSDictionary = [:]
-    var scoreArray: NSDictionary = [:]
+    var scoreArray: NSMutableDictionary = [:]
     
     
     var dbConnect:DatabaseReference!
@@ -185,23 +185,59 @@ class QuestionViewController: UIViewController {
                     {
                         let User1 = User as! NSDictionary
                         let option = User1["option_choosen"] as! NSString
+                        let time_taken_in_second = User1["time_taken_in_second"] as! Int
                         print(UserName)
                         print("Option Choosen : \(option)")
                         
-                        User1.object(forKey: <#T##Any#>)
+                    
                         
                         let keyExists = self.scoreArray[UserName] != nil
                         
-                       // if( option == val1)
-                       // {
-                            // get option, time and score
+                        if( option == val1)
+                        {
+                            var correct_answer = 0 as! Int;
+                            var time_taken = 0 as! Int;
+                            var score = 0 as! Int ;
                             
-                            // if existed -> add further else start with 0
+                            // get option, time and score from SCORE ARRAY
+                            if( keyExists ){
+                                var socre_previous = self.scoreArray[UserName] as! NSDictionary
+                                
+                                var correct_answers_exist = socre_previous["correct_answers"] != nil
+                                var time_taken_exist = socre_previous["time_taken"] != nil
+                                var score_exist = socre_previous["score"] != nil
+                                
+                                if( correct_answers_exist ){
+                                    correct_answer = socre_previous["correct_answers"] as! Int;
+                                }
+                                
+                                if( time_taken_exist ){
+                                    time_taken = socre_previous["time_taken"] as! Int;
+                                }
                             
-                                // array 1 -> add to user (create correct_answers)
+                                if( score_exist ){
+                                    score = socre_previous["score_exist"] as! Int;
+                                }
+                            }
                             
-                            //
-                     //   }
+                            correct_answer = correct_answer+1;
+                            time_taken = time_taken+time_taken_in_second
+                            score = score+( 10-time_taken_in_second )
+                            
+                            let correct_answer_cast = correct_answer as! NSString
+                            let time_taken_cast = time_taken as! NSString
+                            let score_cast = score as! NSString
+                            
+                            
+                            var scoreInternal = [NSString:NSString]();
+                            scoreInternal["correct_answers"] = correct_answer_cast ;
+                            scoreInternal["time_taken"] = time_taken_cast ;
+                            scoreInternal["score_exist"] = score_cast ;
+                            
+                        
+                            self.scoreArray.setValue( scoreInternal, forKey: UserName as! String )
+                           
+                         }
                        
                     }
                     
@@ -213,6 +249,9 @@ class QuestionViewController: UIViewController {
                 
                 // users
                 print("Users : \(self.usersJoined)")
+                
+                // scores
+                print("Users : \(self.scoreArray)")
          
             })
     }
