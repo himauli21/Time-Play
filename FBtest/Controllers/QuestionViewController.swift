@@ -2,7 +2,7 @@
 //  QuestionViewController.swift
 //  FBtest
 //
-//  Created by Jaimin  on 30/07/18.
+//  Created by Himauli Patel on 30/07/18.
 //  Copyright © 2018 robin. All rights reserved.
 //
 
@@ -27,6 +27,11 @@ class QuestionViewController: UIViewController {
     var totalTime = 10
     var timeTaken = ""
     var limit:UInt!
+    var optionSelected = [Any]()
+    var usersJoined = [Any]()
+    var users: NSDictionary = [:]
+    var scoreArray: NSDictionary = [:]
+    
     
     var dbConnect:DatabaseReference!
     var datbaseHandle:DatabaseHandle!
@@ -40,11 +45,11 @@ class QuestionViewController: UIViewController {
 
         self.dbConnect = Database.database().reference()
         self.dbConnect.child("Quiz").child("quizId").child( accessCodeToApply ).child("hasGameStarted").setValue( true )
-        sleep(1)
+        //sleep(1)
         
         print(" Question View Controller ");
        
-        limit = UInt(20)
+        limit = UInt(5)
         startTimer()
         queryFirebase( limit )
         
@@ -80,6 +85,7 @@ class QuestionViewController: UIViewController {
         
         print("=== Question ====")
         print(question)
+        
         
         for option in options {
             
@@ -143,9 +149,10 @@ class QuestionViewController: UIViewController {
             
             // Game over alert
             let alert = UIAlertController(title: "Game Over", message: "Time out", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "We are processign scores.", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "We are processing scores.", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             
+            self.calculateScore()
             }
            
             
@@ -153,6 +160,62 @@ class QuestionViewController: UIViewController {
     }
     
     
+    func calculateScore()  {
+        datbaseHandle = dbConnect?.child("Quiz").child("quizId").child( accessCodeToApply ).child("Questions")
+            .observe(.value, with: { (snapshot) in
+                
+                print("++++++++")
+//                print( snapshot )
+                for snap in snapshot.children {
+                    //print("snap = \(snap)")
+                   
+                    let response = snap as! DataSnapshot
+                    let val1 = response.childSnapshot(forPath: "correct_option").value as! NSString
+                    //print("val1 = \(val1)")
+                  
+                    
+                    self.optionSelected.append(val1)
+                    
+                    self.users = response.childSnapshot(forPath: "Users").value as! NSDictionary
+                    self.usersJoined.append(self.users)
+                  
+                    
+                    
+                    for (UserName, User) in self.users
+                    {
+                        let User1 = User as! NSDictionary
+                        let option = User1["option_choosen"] as! NSString
+                        print(UserName)
+                        print("Option Choosen : \(option)")
+                        
+                        User1.object(forKey: <#T##Any#>)
+                        
+                        let keyExists = self.scoreArray[UserName] != nil
+                        
+                       // if( option == val1)
+                       // {
+                            // get option, time and score
+                            
+                            // if existed -> add further else start with 0
+                            
+                                // array 1 -> add to user (create correct_answers)
+                            
+                            //
+                     //   }
+                       
+                    }
+                    
+    
+                }
+                
+                // get the array of correct_option
+                print("Correct Options : \(self.optionSelected)")
+                
+                // users
+                print("Users : \(self.usersJoined)")
+         
+            })
+    }
     func timeFormatted(_ totalSeconds: Int) -> String {
         let seconds: Int = totalSeconds % 60
         let minutes: Int = (totalSeconds / 60)

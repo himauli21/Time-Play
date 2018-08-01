@@ -25,9 +25,9 @@ class AccessCodeVC: UIViewController {
     @IBOutlet weak var screenLabel: UILabel!
     
    
-    let URL = "https://opentdb.com/api.php?amount=20&difficulty=easy&type=multiple"
+    let URL = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple"
     
-    let url = "https://opentdb.com/api.php?amount=20&difficulty=easy&type=multiple"
+    let url = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple"
     
     
     override func viewDidLoad() {
@@ -166,6 +166,8 @@ class AccessCodeVC: UIViewController {
                         
                         
                         let data = ["Screen": screen,"Access Code": accessCode,"Questions":new_results,"hasGameStarted":false] as [String : Any]
+                        
+                       // print("Data : \(data)")
                         self.dbConnect.child("Quiz").child("quizId").child(String(accessCode)).setValue(data)
                         questions_from_api = new_results;
                         accessCodeToApply = String(accessCode) ;
