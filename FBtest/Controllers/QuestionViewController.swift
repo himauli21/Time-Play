@@ -130,8 +130,6 @@ class QuestionViewController: UIViewController {
             
         }
         else {
-            
-            
            limit = limit-1;
            
            if( limit > 0 ){
@@ -154,8 +152,6 @@ class QuestionViewController: UIViewController {
             
             self.calculateScore()
             }
-           
-            
         }
     }
     
@@ -191,8 +187,6 @@ class QuestionViewController: UIViewController {
                         print(UserName)
                         print("Option Choosen : \(option)")
                         
-                    
-                        
                         let keyExists = self.scoreArray[UserName] != nil
                         
                         if( option == val1)
@@ -218,7 +212,7 @@ class QuestionViewController: UIViewController {
                                 }
                             
                                 if( score_exist ){
-                                    score = socre_previous["score_exist"]!
+                                    score = socre_previous["score"]!
                                 }
                             }
                             
@@ -229,25 +223,27 @@ class QuestionViewController: UIViewController {
                             var scoreInternal = [NSString:Double]();
                             scoreInternal["correct_answers"] = correct_answer
                             scoreInternal["time_taken"] = time_taken
-                            scoreInternal["score_exist"] = score
+                            scoreInternal["score"] = score
                             
                             self.scoreArray.setValue( scoreInternal, forKey: UserName as! String )
                            
                          }
                        
                     }
-                    
-    
                 }
                 
-                // get the array of correct_option
-                print("Correct Options : \(self.optionSelected)")
+//                // get the array of correct_option
+//                print("Correct Options : \(self.optionSelected)")
+//
+//                // users
+//                print("Users : \(self.usersJoined)")
                 
-                // users
-                print("Users : \(self.usersJoined)")
+                // scoresArray
+                print("Score : \(self.scoreArray)")
                 
-                // scores
-                print("Users : \(self.scoreArray)")
+                let sharedPreferences = UserDefaults.standard
+                sharedPreferences.set(self.scoreArray, forKey:"winner")
+                print("Saved \(self.scoreArray) to shared preferences!")
          
             })
     }
@@ -262,9 +258,5 @@ class QuestionViewController: UIViewController {
         
         print("\(totalTime) seconds")
         return "\(totalTime) seconds"
-    }
-    
-    
-    
-    
+    }  
 }

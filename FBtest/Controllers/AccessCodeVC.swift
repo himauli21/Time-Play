@@ -38,8 +38,6 @@ class AccessCodeVC: UIViewController {
         
         getQuestions(url: URL)
         
-      
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -150,8 +148,6 @@ class AccessCodeVC: UIViewController {
                         }
                         
                         print(new_results)
-                        
-                        
                         
                         let accessCode = arc4random()
                         let screen = accessCode % 5

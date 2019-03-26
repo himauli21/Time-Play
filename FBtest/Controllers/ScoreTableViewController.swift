@@ -10,14 +10,21 @@ import UIKit
 
 class ScoreTableViewController: UITableViewController {
 
+    @IBOutlet weak var winnerLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let sharedPreferences = UserDefaults.standard
+        var winner = sharedPreferences.string(forKey: "winner")
+        
+        if (winner == nil) {
+            
+            print("Error")
+        }
+        else {
+           
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
