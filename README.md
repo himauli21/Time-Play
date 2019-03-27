@@ -5,7 +5,7 @@
 ###### 1. Time play is a real time multiplayer game.
 ###### 2. Part-1 is admin and Part-2 can be multiple players.
 
-## How to initialize firebase with project?
+## How to initialize Firebase with project?
 1. Go to [Firebase.com](https://firebase.google.com/)
 2. Signup for account
 3. Start new project
